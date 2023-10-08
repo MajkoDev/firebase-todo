@@ -2,11 +2,25 @@ import React, { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../services/firebase.config";
 
-const TodoTask = ({ task, id, deleteTodo }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [updatedTask, setUpdatesTask] = useState([task]);
+const TodoTask = ({ task, id, deleteTodo, isChecked }) => {
+
+  // TODO: edit check handler
+  const updateCheckbox = async () => {
+    try {
+      const taskDocument = doc(db, "tasks", id);
+      await updateDoc(taskDocument, {
+        task: task,
+        isChecked: !isChecked,
+      });
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   // TODO: edit task handler
+  const [updatedTask, setUpdatesTask] = useState([task]);
+
   const updateTask = async (e) => {
     e.preventDefault();
     console.log(updatedTask);
@@ -23,6 +37,9 @@ const TodoTask = ({ task, id, deleteTodo }) => {
     }
   };
 
+  // TODO: display edit and save change
+  const [isEditing, setIsEditing] = useState(false);
+
   function handleSave(e) {
     updateTask(e);
     setIsEditing(false);
@@ -37,7 +54,7 @@ const TodoTask = ({ task, id, deleteTodo }) => {
         alignItems: "center",
       }}
     >
-      <input type="checkbox" />
+      <input type="checkbox" checked={isChecked} onChange={updateCheckbox} />
       {/* ============================================ */}
       {isEditing ? (
         <>

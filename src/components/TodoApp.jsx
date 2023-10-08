@@ -62,8 +62,6 @@ const TodoApp = () => {
     }
   };
 
-  
-
   //! console.log("tasks", tasks);
 
   return (
@@ -86,9 +84,14 @@ const TodoApp = () => {
       ) : (
         <>
           <div className="todo-list">
-            {tasks.map(({ task, id }) => (
+            {tasks.map(({ task, id, isChecked }) => (
               <div key={id}>
-                <TodoTask task={task} id={id} deleteTodo={deleteTodo} />
+                <TodoTask
+                  task={task}
+                  id={id}
+                  isChecked={isChecked}
+                  deleteTodo={deleteTodo}
+                />
               </div>
             ))}
           </div>
